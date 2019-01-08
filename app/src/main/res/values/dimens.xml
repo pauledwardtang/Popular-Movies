@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="grid_item_spacing">20dp</dimen>
+
+    <!-- Note: Original sizes are not consistent -->
+    <integer-array name="poster_widths_px">
+        <item name="poster_width_xxs" >92</item>
+        <item name="poster_width_xs">154</item>
+        <item name="poster_width_s">185</item>
+        <item name="poster_width_m">342</item>
+        <item name="poster_width_l">500</item>
+        <item name="poster_width_xl">780</item>
+        <!--<item name="poster_width_xxl">1667</item>-->
+    </integer-array>
+
+    <!-- Note: Original sizes are not consistent -->
+    <integer-array name="poster_heights_px" tools:keep="@array/poster_heights_px">
+        <item name="poster_height_xxs">138</item>
+        <item name="poster_height_xs">231</item>
+        <item name="poster_height_s">277</item>
+        <item name="poster_height_m">513</item>
+        <item name="poster_height_l">750</item>
+        <item name="poster_height_xl">1170</item>
+        <!--<item name="poster_height_xxl">2500</item>-->
+    </integer-array>
+</resources>

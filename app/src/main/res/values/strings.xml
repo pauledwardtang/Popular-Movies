@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+
+    <string name="movie_list_empty">No movies found. Try again later!</string>
+    <string name="error_no_movie_detail">No movie specified</string>
+    <string name="error_network">Network error, try again later</string>
+
+    <!-- Actions -->
+    <string name="action_sort">Sort by</string>
+
+    <!-- Poster sizes -->
+    <!-- Note: Original sizes are not consistent. Some w780 sizes aren't consistent either! -->
+    <string-array name="poster_sizes">
+        <item name="poster_size_xxs">w92</item>
+        <item name="poster_size_xs">w154</item>
+        <item name="poster_size_s">w185</item>
+        <item name="poster_size_m">w342</item>
+        <item name="poster_size_l">w500</item>
+        <item name="poster_size_xl">w780</item>
+        <!--<item name="poster_size_xxl">original</item>-->
+    </string-array>
+
+    <!-- Sort Spinner Options -->
+    <string-array name="sort_filters">
+        <item>By Popularity</item>
+        <item>By Top Rated</item>
+    </string-array>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="content_description_poster_image">Poster</string>
+
+    <string name="label_synopsis">Synopsis</string>
+    <string name="label_user_rating">User Rating</string>
+    <string name="label_release_date">Release Date</string>
+
+</resources>
