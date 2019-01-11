@@ -31,7 +31,7 @@ import butterknife.Unbinder;
 import io.phatcat.popmovies.MovieSortType;
 import io.phatcat.popmovies.R;
 import io.phatcat.popmovies.model.Movie;
-import io.phatcat.popmovies.network.MoviesAsyncTask;
+import io.phatcat.popmovies.network.MovieNetworkService;
 import io.phatcat.popmovies.network.OnPostExecuteListener;
 import io.phatcat.popmovies.utils.view.CenteredGridSpacingItemDecoration;
 
@@ -85,6 +85,9 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
         mRecyclerView.addItemDecoration(decoration);
 
         setHasOptionsMenu(true);
+
+        // Setup network
+        MovieNetworkService.getInstance().setListener(this);
         loadMovies(mSortType);
         return view;
     }
@@ -128,6 +131,7 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
     @Override
     public void onDetach() {
         super.onDetach();
+        MovieNetworkService.getInstance().removeListeners();
         mListener = null;
     }
 
@@ -143,7 +147,7 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
 
     private void loadMovies(MovieSortType sortType) {
         mRefreshLayout.setRefreshing(true);
-        new MoviesAsyncTask(this).execute(sortType);
+        MovieNetworkService.getInstance().loadMovies(sortType);
     }
 
     @Override

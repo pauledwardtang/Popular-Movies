@@ -24,5 +24,7 @@ Licences
   - [License](https://github.com/square/picasso/blob/master/LICENSE.txt)
 - Butterknife
   - [License](https://github.com/JakeWharton/butterknife/blob/master/LICENSE.txt)
+- Retrofit
+  - [License](https://square.github.io/retrofit/#license)
 - Hamcrest
   - [License](http://hamcrest.org/)

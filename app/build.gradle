@@ -20,6 +20,7 @@ android {
         // Add the following to gradle.properties (no brackets):
         // API_KEY="<YOUR_API_KEY>"
         it.buildConfigField 'String', 'API_KEY', API_KEY
+        it.buildConfigField 'String', 'API_BASE_URL', '"http://api.themoviedb.org/3/"'
 
     }
     compileOptions {
@@ -42,6 +43,9 @@ dependencies {
     // ButterKnife
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
