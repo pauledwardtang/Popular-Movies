@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/AppTheme.MaterialCardView" >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/authorLabel"
+            style="@style/LabelStyle"
+            android:layout_marginStart="@dimen/review_list_item_horizontal_spacing"
+            android:layout_marginTop="@dimen/review_list_item_vertical_spacing"
+            android:text="@string/label_review_author"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/trailer_list_item_vertical_spacing"
+            android:layout_marginEnd="@dimen/review_list_item_horizontal_spacing"
+            android:layout_marginBottom="@dimen/review_list_item_vertical_spacing"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:ellipsize="end"
+            android:maxLines="2"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/authorLabel"
+            app:layout_constraintTop_toBottomOf="@+id/author"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="If _Bohemian Rhapsody_ is so great, why was the best part of it Tom Hollander saying a single word? Don't get me wrong, Rami Malek deserves props for the role, that much is true (less perhaps than he's been getting, but still, props). But beyond that, _Bohemian Rhapsody_ is bland, choppy, arguably even offensive. There **might** be some value in one of those sing-along type deals if you can get enough Queen fans together for one, but I'll never know, because I have no interest in re-watching this.\r\n\r\n_Final rating:★★ - Had some things that appeal to me, but a poor finished product._&quot;" />
+
+        <TextView
+            android:id="@+id/author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/review_list_item_horizontal_spacing"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textSize="18sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/authorLabel"
+            app:layout_constraintStart_toEndOf="@+id/authorLabel"
+            tools:text="Gimly" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/seeReviewButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/action_view_full_review"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/content" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

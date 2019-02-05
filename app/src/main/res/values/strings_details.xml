@@ -2,9 +2,19 @@
 <resources>
 
     <string name="content_description_poster_image">Poster</string>
+    <string name="scroll_down_indicator">Scroll down indicator</string>
 
+    <!-- Movie Details-->
     <string name="label_synopsis">Synopsis</string>
     <string name="label_user_rating">User Rating</string>
     <string name="label_release_date">Release Date</string>
+    <string name="label_trailers">Trailers</string>
+    <string name="label_reviews">Reviews</string>
 
+    <!-- Videos -->
+    <string name="label_video_type">Type:</string>
+    <string name="label_video_size">Size:</string>
+
+    <!-- Reviews -->
+    <string name="label_review_author">Author:</string>
 </resources>

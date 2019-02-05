@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#212121</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#D81B60</color>
+    <!-- Swatch -->
+    <color name="white">@android:color/white</color>
+    <color name="black">@android:color/black</color>
+    <color name="grey_700">#616161</color>
+    <color name="grey_800">#424242</color>
+    <color name="grey_900">#212121</color>
+    <color name="pink_600">#D81B60</color>
+    <color name="pink_900">#880E4f</color>
+
+    <!-- Material Components-->
+    <color name="colorPrimary">@color/grey_900</color>
+    <color name="colorPrimaryDark">@color/black</color>
+
+    <color name="colorAccent">@color/pink_600</color>
+    <color name="colorAccentDark">@color/pink_900</color>
+
     <color name="colorBackground">#303030</color>
-    <color name="colorOnBackground">#FFFFFF</color>
+    <color name="colorSurface">@color/colorBackground</color>
+    <!--<color name="colorSurface">@color/grey_800</color>-->
+    <color name="colorError">#B00020</color>
+
+    <color name="colorOnPrimary">@color/white</color>
+    <color name="colorOnSecondary">@color/white</color>
+    <color name="colorOnBackground">@color/white</color>
+    <color name="colorOnSurface">@color/white</color>
+    <color name="colorOnError">@color/white</color>
+
+    <color name="colorCardStroke">@color/grey_700</color>
 </resources>

@@ -4,18 +4,38 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
+@Entity(tableName = "movie")
 public class Movie implements Parcelable {
 
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    private int mId;
+
+    @ColumnInfo(name = "title")
     private String mTitle;
+
+    @ColumnInfo(name = "poster_path")
     private String mPosterUrl;
+
+    @ColumnInfo(name = "overview")
     private String mSynopsis;
+
+    @ColumnInfo(name = "vote_average")
     private double mRating;
+
+    @ColumnInfo(name = "release_date")
     private String mReleaseDate;
 
     public Movie() {}
 
+    @Ignore
     private Movie(Parcel in) {
+        mId = in.readInt();
         mTitle = in.readString();
         mPosterUrl = in.readString();
         mSynopsis = in.readString();
@@ -42,6 +62,7 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(getId());
         dest.writeString(getTitle());
         dest.writeString(getPosterUrl());
         dest.writeString(getSynopsis());
@@ -49,43 +70,29 @@ public class Movie implements Parcelable {
         dest.writeString(getReleaseDate());
     }
 
-    public String getTitle() {
-        return mTitle;
-    }
+    public int getId() { return mId; }
 
-    public void setTitle(String title) {
-        this.mTitle = title;
-    }
+    public void setId(int id) { mId = id; }
 
-    public String getPosterUrl() {
-        return mPosterUrl;
-    }
+    public String getTitle() { return mTitle; }
 
-    public void setPosterUrl(String posterUrl) {
-        this.mPosterUrl = posterUrl;
-    }
+    public void setTitle(String title) { mTitle = title; }
 
-    public String getSynopsis() {
-        return mSynopsis;
-    }
+    public String getPosterUrl() { return mPosterUrl; }
 
-    public void setSynopsis(String synopsis) {
-        this.mSynopsis = synopsis;
-    }
+    public void setPosterUrl(String posterUrl) { mPosterUrl = posterUrl; }
 
-    public double getRating() {
-        return mRating;
-    }
+    public String getSynopsis() { return mSynopsis; }
 
-    public void setRating(double rating) { this.mRating = rating; }
+    public void setSynopsis(String synopsis) { mSynopsis = synopsis; }
 
-    public String getReleaseDate() {
-        return mReleaseDate;
-    }
+    public double getRating() { return mRating; }
 
-    public void setReleaseDate(String mReleaseDate) {
-        this.mReleaseDate = mReleaseDate;
-    }
+    public void setRating(double rating) { mRating = rating; }
+
+    public String getReleaseDate() { return mReleaseDate; }
+
+    public void setReleaseDate(String releaseDate) { mReleaseDate = releaseDate; }
 
     @NonNull
     @Override

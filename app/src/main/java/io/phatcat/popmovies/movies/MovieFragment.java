@@ -2,6 +2,7 @@ package io.phatcat.popmovies.movies;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,12 +15,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -33,9 +37,11 @@ import io.phatcat.popmovies.R;
 import io.phatcat.popmovies.model.Movie;
 import io.phatcat.popmovies.network.MovieNetworkService;
 import io.phatcat.popmovies.network.OnPostExecuteListener;
+import io.phatcat.popmovies.storage.MovieViewModel;
 import io.phatcat.popmovies.utils.view.CenteredGridSpacingItemDecoration;
 
 import static androidx.recyclerview.widget.RecyclerView.ItemDecoration;
+
 /**
  * A fragment representing a grid of movies.
  * <p/>
@@ -45,6 +51,7 @@ import static androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 // Ignore ButterKnife access warnings, fields cannot be private.
 @SuppressWarnings("WeakerAccess")
 public class MovieFragment extends Fragment implements OnPostExecuteListener<List<Movie>> {
+    private static final String ARG_FILTER = "ARG_FILTER";
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout mRefreshLayout;
     @BindView(android.R.id.list) RecyclerView mRecyclerView;
@@ -58,6 +65,7 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
     private OnListFragmentInteractionListener mListener;
     private MovieRecyclerViewAdapter mAdapter;
     private MovieSortType mSortType = MovieSortType.POPULAR;
+    private MovieViewModel mMovieViewModel;
 
     /**
      * Required empty public constructor
@@ -69,6 +77,10 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
         mUnbinder = ButterKnife.bind(this, view);
+
+        if (savedInstanceState != null) {
+            mSortType = (MovieSortType) savedInstanceState.getSerializable(ARG_FILTER);
+        }
 
         mRefreshLayout.setOnRefreshListener(() -> loadMovies(mSortType));
 
@@ -87,9 +99,23 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
         setHasOptionsMenu(true);
 
         // Setup network
-        MovieNetworkService.getInstance().setListener(this);
+        mMovieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+        mMovieViewModel.getFavoriteMovies().observe(this, movies -> {
+            // Refresh favorite movies
+            if (mSortType == MovieSortType.FAVORITE) {
+                refreshMovies(movies, false);
+            }
+        });
+
+        MovieNetworkService.getInstance().addListener(this);
         loadMovies(mSortType);
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(ARG_FILTER, mSortType);
     }
 
     @Override
@@ -105,10 +131,11 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        spinner.setSelection(mSortType.ordinal());
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mSortType = (position == 0) ? MovieSortType.POPULAR : MovieSortType.TOP_RATED;
+                mSortType = MovieSortType.values()[position];
                 loadMovies(mSortType);
             }
 
@@ -145,22 +172,49 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
         return mDefaultGridSpan;
     }
 
-    private void loadMovies(MovieSortType sortType) {
+    private void loadMovies(@NonNull MovieSortType sortType) {
         mRefreshLayout.setRefreshing(true);
-        MovieNetworkService.getInstance().loadMovies(sortType);
+        switch (sortType) {
+            case POPULAR:
+            case TOP_RATED:
+                MovieNetworkService.getInstance().loadMovies(sortType);
+                break;
+
+            case FAVORITE:
+                List<Movie> movies = mMovieViewModel.getFavoriteMovies().getValue();
+                refreshMovies(movies, false);
+                break;
+        }
+
     }
 
     @Override
     public void onPostExecute(@Nullable List<Movie> response) {
-        if (response == null) {
+        refreshMovies(response, true);
+    }
+
+    private void refreshMovies(@Nullable List<Movie> movies, boolean shouldCache) {
+        if (movies == null) {
             Toast.makeText(requireActivity(), R.string.error_network, Toast.LENGTH_LONG).show();
+            mRecyclerView.setVisibility(View.INVISIBLE);
+            mEmptyView.setVisibility(View.VISIBLE);
         }
-        else if (response.isEmpty()) {
-            Toast.makeText(requireActivity(), R.string.movie_list_empty, Toast.LENGTH_LONG).show();
+        else if (movies.isEmpty()) {
+            // Show the no movies found error
+            mRecyclerView.setVisibility(View.INVISIBLE);
+            mEmptyView.setVisibility(View.VISIBLE);
         }
         else {
-            mAdapter.setList(response);
+            // Caching all queried movies
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.INVISIBLE);
+
+            if (shouldCache) {
+                mMovieViewModel.insertAll(movies);
+            }
+            mAdapter.setList(movies);
         }
+
         mRefreshLayout.setRefreshing(false);
     }
 

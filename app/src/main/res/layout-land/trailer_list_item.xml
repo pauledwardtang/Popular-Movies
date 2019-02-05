@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <!-- Separated so xlarge devices can use landscape layout in portrait mode via aliasing-->
+    <include layout="@layout/trailer_list_item_land" />
+</LinearLayout>

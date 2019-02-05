@@ -1,13 +1,15 @@
 package io.phatcat.popmovies.network;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.function.Function;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import io.phatcat.popmovies.model.Movie;
+import io.phatcat.popmovies.model.MovieReviewPage;
+import io.phatcat.popmovies.model.MovieTrailers;
 import io.phatcat.popmovies.utils.JsonUtils;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
@@ -32,22 +34,25 @@ final class MovieConverterFactory extends Converter.Factory {
     public Converter<ResponseBody, ?> responseBodyConverter(Type type,
                                                             Annotation[] annotations,
                                                             Retrofit retrofit) {
-        return new MovieResponseBodyConverter();
+        Class<?> clazz = getRawType(type);
+        if (clazz == MovieReviewPage.class) {
+            return new ResponseConverter<>(JsonUtils::parseReviews);
+        }
+        else if (clazz == MovieTrailers.class) {
+            return new ResponseConverter<>(JsonUtils::parseTrailers);
+        }
+        else if (clazz == Movie.class) {
+            return new ResponseConverter<>(JsonUtils::parseMovie);
+        }
+        else if (clazz == List.class) {
+            // Here be dragons! :D
+            Type parameterizedType = getParameterUpperBound(0, (ParameterizedType) type);
+            Class clazzier = getRawType(parameterizedType);
+            if (clazzier == Movie.class) {
+                return new ResponseConverter<>(JsonUtils::parseMovies);
+            }
+        }
+        return null;
     }
 
-    private static class MovieResponseBodyConverter implements Converter<ResponseBody, List<Movie>> {
-        @Nullable
-        @Override
-        public List<Movie> convert(@NonNull ResponseBody value) {
-            List<Movie> moviesList = null;
-            try {
-                String response = value.string();
-                moviesList = JsonUtils.parseMovies(response);
-            }
-            catch (IOException | OutOfMemoryError e) {
-                e.printStackTrace();
-            }
-            return moviesList;
-        }
-    }
 }

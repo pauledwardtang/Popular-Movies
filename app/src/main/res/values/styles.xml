@@ -2,11 +2,24 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <!-- Material Theming-->
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+
+        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorSecondaryVariant">@color/colorAccentDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+
         <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="colorError">@color/colorError</item>
+        <item name="colorOnError">@color/colorOnError</item>
+
         <item name="android:textColorPrimary">@color/colorOnBackground</item>
         <item name="android:colorForeground">@color/colorOnBackground</item>
         <item name="android:textColor">@color/colorOnBackground</item>
@@ -18,5 +31,26 @@
         <!-- This keeps the size of the home icon modest, instead of the comical default -->
         <item name="android:paddingTop">16dp</item>
         <item name="android:paddingBottom">16dp</item>
+    </style>
+
+    <style name="AppTheme.MaterialCardView" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/card_margin_horizontal</item>
+        <item name="android:layout_marginEnd">@dimen/card_margin_horizontal</item>
+        <item name="android:layout_marginTop">@dimen/card_margin_vertical</item>
+        <item name="android:strokeColor">@color/colorAccent</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardCornerRadius">0dp</item>
+        <item name="strokeWidth">1px</item>
+    </style>
+
+    <!-- Styles for all labels -->
+    <style name="LabelStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Overline</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="android:textSize">12sp</item>
     </style>
 </resources>

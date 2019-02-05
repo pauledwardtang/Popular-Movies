@@ -2,6 +2,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="text_margin">16dp</dimen>
     <dimen name="grid_item_spacing">20dp</dimen>
+    <dimen name="card_margin_horizontal">4dp</dimen>
+    <dimen name="card_margin_vertical">0dp</dimen>
+
+    <dimen name="trailer_card_padding">0dp</dimen>
+    <dimen name="trailer_list_item_horizontal_spacing">8dp</dimen>
+    <dimen name="trailer_list_item_vertical_spacing">8dp</dimen>
+
+    <dimen name="review_list_item_horizontal_spacing">16dp</dimen>
+    <dimen name="review_list_item_vertical_spacing">8dp</dimen>
+
+    <!-- Down arrow for scrolling posters -->
+    <dimen name="down_indicator_width">48dp</dimen>
+    <dimen name="down_indicator_height">24dp</dimen>
+
+    <dimen name="play_button_size">40dp</dimen>
 
     <!-- Note: Original sizes are not consistent -->
     <integer-array name="poster_widths_px">

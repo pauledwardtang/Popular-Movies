@@ -10,4 +10,10 @@ public enum MovieSortType {
      * Sort by top rated movies.
      */
     TOP_RATED,
+
+    /**
+     * Sort by favorite movies.
+     */
+    FAVORITE,
+
 }

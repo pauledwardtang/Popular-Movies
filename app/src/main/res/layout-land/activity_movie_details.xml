@@ -27,10 +27,10 @@
             android:id="@+id/posterImage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/content_description_poster_image"
             android:elevation="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_height="320dp"
@@ -41,36 +41,34 @@
         <TextView
             android:id="@+id/labelSynopsis"
             style="@style/LabelStyle"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="@dimen/text_margin"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/label_synopsis"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/posterImage" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/synopsisTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/posterImage" />
 
         <TextView
             android:id="@+id/labelUserRating"
             style="@style/LabelStyle"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:text="@string/label_user_rating"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/synopsisTv" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/userRatingTv"
+            app:layout_constraintEnd_toEndOf="@+id/barrier" />
 
         <TextView
             android:id="@+id/labelReleaseDate"
             style="@style/LabelStyle"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:text="@string/label_release_date"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userRatingTv" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/releaseDateTv"
+            app:layout_constraintEnd_toEndOf="@+id/barrier" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="end"
-            app:constraint_referenced_ids="labelReleaseDate,labelUserRating,labelSynopsis" />
+            app:constraint_referenced_ids="labelReleaseDate,labelUserRating,labelSynopsis"
+            tools:layout_editor_absoluteX="91dp" />
 
         <!-- Content-->
         <TextView
@@ -78,13 +76,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@+id/userRatingTv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/barrier"
-            app:layout_constraintTop_toTopOf="@+id/labelSynopsis"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/lorem" />
 
         <TextView
@@ -92,12 +92,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="32dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            app:layout_constraintBaseline_toBaselineOf="@+id/labelUserRating"
+            app:layout_constraintBottom_toTopOf="@+id/releaseDateTv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/barrier"
+            app:layout_constraintTop_toBottomOf="@+id/synopsisTv"
             tools:text="7.5" />
 
         <TextView
@@ -105,12 +106,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="8dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            app:layout_constraintBaseline_toBaselineOf="@+id/labelReleaseDate"
+            app:layout_constraintBottom_toTopOf="@+id/trailerList"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/barrier"
+            app:layout_constraintTop_toBottomOf="@+id/userRatingTv"
             tools:text="1999-10-15" />
 
         <androidx.constraintlayout.widget.Group
@@ -139,15 +142,13 @@
             style="@style/LabelStyle"
             android:layout_marginTop="8dp"
             android:text="@string/label_trailers"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
-            app:layout_constraintStart_toStartOf="@+id/labelReleaseDate"
-            app:layout_constraintTop_toBottomOf="@+id/labelReleaseDate" />
+            app:layout_constraintStart_toStartOf="@+id/posterImage"
+            app:layout_constraintTop_toBottomOf="@+id/posterImage" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/trailerList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/trailersLabel"

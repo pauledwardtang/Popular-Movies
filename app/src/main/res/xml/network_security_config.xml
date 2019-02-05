@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 9.0: Targeting  -->
+<!-- https://developer.android.com/training/articles/security-config#CleartextTrafficPermitted -->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">api.themoviedb.org</domain>
+    </domain-config>
+</network-security-config>
