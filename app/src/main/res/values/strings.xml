@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Popular Movies</string>
 
+    <!-- Titles -->
+    <string name="title_popular">Popular Movies</string>
+    <string name="title_top_rated">Top Rated Movies</string>
+    <string name="title_favorite">Favorite Movies</string>
+
     <string name="movie_list_empty">No movies found!</string>
     <string name="error_no_movie_detail">No movie specified</string>
     <string name="error_network">Network error, try again later</string>
@@ -23,11 +28,9 @@
         <!--<item name="poster_size_xxl">original</item>-->
     </string-array>
 
-    <!-- Sort Spinner Options -->
-    <string-array name="sort_filters">
-        <item>By Popularity</item>
-        <item>By Top Rated</item>
-        <item>By Favorites</item>
-    </string-array>
+    <!-- Bottom navigation -->
+    <string name="category_popular">Popular</string>
+    <string name="category_top_rated">Top Rated</string>
+    <string name="category_favorite">Favorites</string>
 
 </resources>

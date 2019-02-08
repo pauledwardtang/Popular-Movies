@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Material Theming-->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
@@ -25,12 +25,13 @@
         <item name="android:textColor">@color/colorOnBackground</item>
 
         <item name="toolbarStyle">@style/AppTheme.ActionBar</item>
+        <item name="bottomNavigationStyle">@style/BottomNavigation</item>
     </style>
 
     <style name="AppTheme.ActionBar" parent="Base.Theme.MaterialComponents.Light.DarkActionBar">
         <!-- This keeps the size of the home icon modest, instead of the comical default -->
-        <item name="android:paddingTop">16dp</item>
-        <item name="android:paddingBottom">16dp</item>
+        <item name="android:paddingTop">@dimen/app_bar_padding</item>
+        <item name="android:paddingBottom">@dimen/app_bar_padding</item>
     </style>
 
     <style name="AppTheme.MaterialCardView" parent="@style/Widget.MaterialComponents.CardView">
@@ -53,4 +54,9 @@
         <item name="android:fontFamily">sans-serif-thin</item>
         <item name="android:textSize">12sp</item>
     </style>
+
+    <style name="BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="itemIconTint">@drawable/bottom_nav_colors</item>
+    </style>
+
 </resources>

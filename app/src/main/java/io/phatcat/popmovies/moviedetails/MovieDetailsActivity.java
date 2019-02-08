@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -21,6 +22,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.Group;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,6 +46,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
     public static final String ARG_MOVIE = "ARG_MOVIE";
     public static final String ARG_TRAILERS = "ARG_TRAILERS";
     public static final String ARG_REVIEWS = "ARG_REVIEWS";
+
+    @BindView(R.id.toolbarLayout) CollapsingToolbarLayout mToolbarLayout;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.title) TextView mTitle;
 
     @BindView(R.id.progressBar) ProgressBar mProgressBar;
     @BindView(R.id.posterImage) ImageView mPosterImage;
@@ -77,6 +83,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_details);
         ButterKnife.bind(this);
 
+        // Setup actionbar
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+
         Bundle bundle = (savedInstanceState == null) ? getIntent().getExtras() : savedInstanceState;
         if (bundle == null) {
             throw new IllegalStateException();
@@ -91,7 +102,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             return;
         }
 
-        setTitle(mMovie.getTitle());
+        mTitle.setText(mMovie.getTitle());
         mSynopsisTv.setText(mMovie.getSynopsis());
         mUserRatingTv.setText(String.valueOf(mMovie.getRating()));
         mReleaseDateTv.setText(mMovie.getReleaseDate());

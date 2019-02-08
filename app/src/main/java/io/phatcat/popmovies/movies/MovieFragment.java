@@ -1,22 +1,17 @@
 package io.phatcat.popmovies.movies;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,6 +33,7 @@ import io.phatcat.popmovies.model.Movie;
 import io.phatcat.popmovies.network.MovieNetworkService;
 import io.phatcat.popmovies.network.OnPostExecuteListener;
 import io.phatcat.popmovies.storage.MovieViewModel;
+import io.phatcat.popmovies.utils.PreferencesUtils;
 import io.phatcat.popmovies.utils.view.CenteredGridSpacingItemDecoration;
 
 import static androidx.recyclerview.widget.RecyclerView.ItemDecoration;
@@ -50,12 +46,13 @@ import static androidx.recyclerview.widget.RecyclerView.ItemDecoration;
  */
 // Ignore ButterKnife access warnings, fields cannot be private.
 @SuppressWarnings("WeakerAccess")
-public class MovieFragment extends Fragment implements OnPostExecuteListener<List<Movie>> {
+public class MovieFragment extends Fragment implements OnPostExecuteListener<List<Movie>>,
+        SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String ARG_FILTER = "ARG_FILTER";
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout mRefreshLayout;
     @BindView(android.R.id.list) RecyclerView mRecyclerView;
-    @BindView(android.R.id.empty) TextView mEmptyView;
+    @BindView(R.id.noMoviesView) ViewGroup mEmptyView;
 
     // Binding dimensions to calculate grid size.
     @BindDimen(R.dimen.grid_item_spacing) int mPosterSpacing;
@@ -88,7 +85,6 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
         gridLayoutManager.setSmoothScrollbarEnabled(true);
 
         mAdapter = new MovieRecyclerViewAdapter(Collections.emptyList(), mListener, getSpanSize());
-        mEmptyView.setVisibility(View.VISIBLE);
 
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(gridLayoutManager);
@@ -109,6 +105,7 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
 
         MovieNetworkService.getInstance().addListener(this);
         loadMovies(mSortType);
+
         return view;
     }
 
@@ -119,29 +116,20 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
     }
 
     @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (PreferencesUtils.PREF_KEY_SORT_FILTER.equals(key)) {
+            MovieSortType newSortType = PreferencesUtils.getMovieFilter(sharedPreferences);
+            if (newSortType == null) return;
+
+            mSortType = newSortType;
+            mRecyclerView.setVisibility(View.INVISIBLE);
+            loadMovies(mSortType);
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-
-        MenuItem spinnerItem = menu.findItem(R.id.action_bar_spinner);
-        Spinner spinner = (Spinner) spinnerItem.getActionView();
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                requireActivity(),
-                R.array.sort_filters,
-                android.R.layout.simple_spinner_item);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(mSortType.ordinal());
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mSortType = MovieSortType.values()[position];
-                loadMovies(mSortType);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
     }
 
     @Override
@@ -153,6 +141,8 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireActivity());
+        prefs.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -160,6 +150,9 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
         super.onDetach();
         MovieNetworkService.getInstance().removeListeners();
         mListener = null;
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireActivity());
+        prefs.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -174,6 +167,7 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
 
     private void loadMovies(@NonNull MovieSortType sortType) {
         mRefreshLayout.setRefreshing(true);
+        MovieNetworkService.getInstance().cancelLoad();
         switch (sortType) {
             case POPULAR:
             case TOP_RATED:

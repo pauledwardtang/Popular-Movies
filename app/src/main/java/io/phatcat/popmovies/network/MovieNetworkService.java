@@ -97,6 +97,15 @@ public final class MovieNetworkService {
         }
     }
 
+    public void cancelLoad() {
+        synchronized (this) {
+            if (mCurrentCall != null && !mCurrentCall.isCanceled()) {
+                mCurrentCall.cancel();
+                mCurrentCall = null;
+            }
+        }
+    }
+
     private void onLoadMovies(MovieSortType sortType) {
         String sortBy;
         switch (sortType) {
@@ -110,14 +119,18 @@ public final class MovieNetworkService {
                 throw new InvalidParameterException("Invalid parameter given: " + sortType.name());
         }
 
-        mCurrentCall = mMovieService.getMovies(sortBy, BuildConfig.API_KEY);
-        mCurrentCall.enqueue(mSingleCallback);
+        synchronized (this) {
+            mCurrentCall = mMovieService.getMovies(sortBy, BuildConfig.API_KEY);
+            mCurrentCall.enqueue(mSingleCallback);
+        }
     }
 
     private Callback<List<Movie>> mSingleCallback = new Callback<List<Movie>>() {
         @Override
         public void onResponse(@NonNull Call<List<Movie>> call,
                                @NonNull Response<List<Movie>> response) {
+            if (call.isCanceled()) return;
+
             mCurrentCall = null;
 
             if (mListener != null) {
@@ -130,13 +143,16 @@ public final class MovieNetworkService {
 
         @Override
         public void onFailure(@NonNull Call<List<Movie>> call, Throwable t) {
-            mCurrentCall = null;
-            t.printStackTrace();
-            if (mListener != null) {
-                mListener.onPostExecute(null);
-            }
-            else {
-                Log.w(TAG, "Movies failed to load, but no listener to callback");
+            synchronized (this) {
+                if (call.isCanceled()) return;
+                mCurrentCall = null;
+
+                t.printStackTrace();
+                if (mListener != null) {
+                    mListener.onPostExecute(null);
+                } else {
+                    Log.w(TAG, "Movies failed to load, but no listener to callback");
+                }
             }
         }
     };
@@ -156,14 +172,14 @@ public final class MovieNetworkService {
                     @Override
                     public void onResponse(@NonNull Call<MovieTrailers> call,
                                            @NonNull Response<MovieTrailers> response) {
-                        if (listener != null)
+                        if (listener != null && !call.isCanceled())
                             listener.onPostExecute(response.body());
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<MovieTrailers> call, @NonNull Throwable t) {
                         Log.e(TAG, "Failure loading videos", t);
-                        if (listener != null)
+                        if (listener != null && !call.isCanceled())
                             listener.onPostExecute(null);
                     }
                 });
@@ -207,14 +223,14 @@ public final class MovieNetworkService {
                     @Override
                     public void onResponse(@NonNull Call<MovieReviewPage> call,
                                            @NonNull Response<MovieReviewPage> response) {
-                        if (listener != null)
+                        if (listener != null && !call.isCanceled())
                             listener.onPostExecute(response.body());
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<MovieReviewPage> call, @NonNull Throwable t) {
                         Log.e(TAG, "Failure loading reviews", t);
-                        if (listener != null)
+                        if (listener != null && !call.isCanceled())
                             listener.onPostExecute(null);
                     }
                 });
