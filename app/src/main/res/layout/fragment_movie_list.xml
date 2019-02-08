@@ -45,7 +45,7 @@
 
         <ImageView
             android:layout_width="@dimen/no_movies_image_width"
-            android:layout_height="@dimen/no_movies_image_length"
+            android:layout_height="@dimen/no_movies_image_height"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:contentDescription="@null"

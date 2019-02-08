@@ -1,6 +1,10 @@
 package io.phatcat.popmovies.movies;
 
+import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.ImageDecoder;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +16,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.DrawableUtils;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +36,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     private final OnListFragmentInteractionListener mListener;
     private String mPosterSize;
     private final int mGridSize;
+    private Drawable mPlaceholderDrawable;
 
     public MovieRecyclerViewAdapter(List<Movie> items,
                                     OnListFragmentInteractionListener listener,
@@ -63,7 +69,12 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         Movie movie = mValues.get(position);
         String url = ImageUtils.getUrl(mPosterSize, movie.getPosterUrl());
-        Picasso.get().load(url).noFade().into(holder.posterImage);
+        Picasso.get()
+                .load(url)
+                .noFade()
+                .error(R.drawable.grid_poster_placeholder)
+                .placeholder(mPlaceholderDrawable)
+                .into(holder.posterImage);
 
         holder.mMovie = movie;
         holder.itemView.setOnClickListener(v -> {
@@ -94,6 +105,8 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         mPosterSize =
                 ImageUtils.getPosterWidthForConstraint(recyclerView.getContext(), widthScalarForGridSize);
         Log.d(TAG, "Resolved poster size for grid: " + mPosterSize);
+
+        mPlaceholderDrawable = recyclerView.getContext().getDrawable(R.drawable.grid_poster_placeholder);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

@@ -256,7 +256,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
             public void onError(Exception e) {
                 Log.e(TAG, "Picasso load error for " + mMovie.getTitle(), e);
                 Toast.makeText(MovieDetailsActivity.this, R.string.error_network, Toast.LENGTH_LONG).show();
-                finish();
             }
         });
     }

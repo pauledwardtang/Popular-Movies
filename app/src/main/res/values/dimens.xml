@@ -5,6 +5,8 @@
     <dimen name="card_margin_horizontal">4dp</dimen>
     <dimen name="card_margin_vertical">0dp</dimen>
 
+    <dimen name="poster_placeholder_width">174dp</dimen>
+    <dimen name="poster_placeholder_height">224dp</dimen>
     <dimen name="poster_elevation">4dp</dimen>
 
     <dimen name="app_bar_icon_spacing">24dp</dimen>
@@ -24,7 +26,7 @@
 
     <dimen name="play_button_size">40dp</dimen>
     <dimen name="no_movies_image_width">96dp</dimen>
-    <dimen name="no_movies_image_length">96dp</dimen>
+    <dimen name="no_movies_image_height">96dp</dimen>
 
     <!-- Note: Original sizes are not consistent -->
     <integer-array name="poster_widths_px">
