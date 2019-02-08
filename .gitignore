@@ -1,6 +1,10 @@
 *.iml
 .gradle
 gradle*
+.directory
+
+google-services.json
+/*/release/
 /gradle
 /local.properties
 /.idea
