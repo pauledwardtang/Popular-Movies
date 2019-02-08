@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="text_margin">16dp</dimen>
-    <dimen name="grid_item_spacing">20dp</dimen>
+    <dimen name="grid_item_spacing">4dp</dimen>
     <dimen name="card_margin_horizontal">4dp</dimen>
     <dimen name="card_margin_vertical">0dp</dimen>
 

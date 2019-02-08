@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="grid_item_spacing">20dp</dimen>
+    <dimen name="grid_item_spacing">4dp</dimen>
 
     <dimen name="trailer_card_padding">8dp</dimen>
     <dimen name="trailer_list_item_horizontal_spacing">32dp</dimen>

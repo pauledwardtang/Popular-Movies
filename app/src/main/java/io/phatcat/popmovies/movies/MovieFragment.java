@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.Collections;
@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.transition.TransitionManager;
 import butterknife.BindDimen;
 import butterknife.BindInt;
 import butterknife.BindView;
@@ -53,6 +54,7 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout mRefreshLayout;
     @BindView(android.R.id.list) RecyclerView mRecyclerView;
     @BindView(R.id.noMoviesView) ViewGroup mEmptyView;
+    @BindView(R.id.progressBar) ProgressBar mProgressBar;
 
     // Binding dimensions to calculate grid size.
     @BindDimen(R.dimen.grid_item_spacing) int mPosterSpacing;
@@ -166,7 +168,7 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
     }
 
     private void loadMovies(@NonNull MovieSortType sortType) {
-        mRefreshLayout.setRefreshing(true);
+        mProgressBar.setVisibility(View.VISIBLE);
         MovieNetworkService.getInstance().cancelLoad();
         switch (sortType) {
             case POPULAR:
@@ -188,6 +190,9 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
     }
 
     private void refreshMovies(@Nullable List<Movie> movies, boolean shouldCache) {
+        TransitionManager.beginDelayedTransition(mRecyclerView);
+        TransitionManager.beginDelayedTransition(mEmptyView);
+
         if (movies == null) {
             Toast.makeText(requireActivity(), R.string.error_network, Toast.LENGTH_LONG).show();
             mRecyclerView.setVisibility(View.INVISIBLE);
@@ -210,6 +215,7 @@ public class MovieFragment extends Fragment implements OnPostExecuteListener<Lis
         }
 
         mRefreshLayout.setRefreshing(false);
+        mProgressBar.setVisibility(View.GONE);
     }
 
     public interface OnListFragmentInteractionListener {

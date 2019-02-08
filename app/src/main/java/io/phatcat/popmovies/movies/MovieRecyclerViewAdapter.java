@@ -35,9 +35,18 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     public MovieRecyclerViewAdapter(List<Movie> items,
                                     OnListFragmentInteractionListener listener,
                                     int gridSize) {
+        if (gridSize < 2) {
+            throw new IllegalStateException();
+        }
+
         mValues = items;
         mListener = listener;
         mGridSize = gridSize;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return (long) mValues.get(position).getId();
     }
 
     @Override
@@ -54,7 +63,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         Movie movie = mValues.get(position);
         String url = ImageUtils.getUrl(mPosterSize, movie.getPosterUrl());
-        Picasso.get().load(url).into(holder.posterImage);
+        Picasso.get().load(url).noFade().into(holder.posterImage);
 
         holder.mMovie = movie;
         holder.itemView.setOnClickListener(v -> {
@@ -80,9 +89,11 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         int deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int widthScalarForGridSize = deviceWidth / (mGridSize - 1); // Get a slightly larger image
+
         mPosterSize =
-                ImageUtils.getPosterWidthForConstraint(recyclerView.getContext(), deviceWidth / mGridSize);
-        Log.d(TAG, "Resolved poster size for grid: " + deviceWidth);
+                ImageUtils.getPosterWidthForConstraint(recyclerView.getContext(), widthScalarForGridSize);
+        Log.d(TAG, "Resolved poster size for grid: " + mPosterSize);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
