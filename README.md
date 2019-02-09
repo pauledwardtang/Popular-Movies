@@ -5,10 +5,10 @@ Popular Movies brings in the most popular and top rated movies from TheMovieDb.o
 Implementation
 ----
 ### Main
-A RecyclerView with a GridLayoutManager is used to display images fetched from TheMovieDb API. Network calls are made in a background thread. A spinner is used in the toolbar to load movies either by popularity or top rated.
+A RecyclerView with a GridLayoutManager is used to display images fetched from TheMovieDb API. Network calls are made in a background thread using RetroFit. A bottom navigation view is used to load movies by popularity, rating, or by favorite (from a Room database).
 
 ### Movie Details
-Tapping a grid icon will load a details screen. The layout is implemented using a ConstraintLayout. A loading indicator is shown while Picasso loads an appropriately sized poster image.
+Tapping a grid icon will load a details screen. The layout is implemented using a ConstraintLayout. A loading indicator is shown while Picasso loads an appropriately sized poster image. Trailers and reviews are loaded for the video as well. Tapping on the play icon of one of the trailers will load YouTube (if available) or a web browser.
 
 Build
 -----
