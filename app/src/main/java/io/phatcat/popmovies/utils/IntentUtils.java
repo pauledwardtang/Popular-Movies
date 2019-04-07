@@ -19,4 +19,8 @@ public class IntentUtils {
     public static Intent getYouTubeWebIntent(String key) {
         return new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + key));
     }
+
+    public static Intent getPrivacyPolicyIntent() {
+        return new Intent(Intent.ACTION_VIEW, Uri.parse("http://privacy.phatcat.io"));
+    }
 }

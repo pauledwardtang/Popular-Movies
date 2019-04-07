@@ -5,6 +5,7 @@
     <string name="title_popular">Popular Movies</string>
     <string name="title_top_rated">Top Rated Movies</string>
     <string name="title_favorite">Favorite Movies</string>
+    <string name="title_privacy_policy">View Privacy Policy</string>
 
     <string name="movie_list_empty">No movies found!</string>
     <string name="error_no_movie_detail">No movie specified</string>
@@ -15,6 +16,7 @@
     <string name="action_play">Play</string>
     <string name="action_favorite">Favorite</string>
     <string name="action_view_full_review">Full Review</string>
+    <string name="action_help">Help</string>
 
     <!-- Poster sizes -->
     <!-- Note: Original sizes are not consistent. Some w780 sizes aren't consistent either! -->

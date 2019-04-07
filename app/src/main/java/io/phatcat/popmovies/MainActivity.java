@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import io.phatcat.popmovies.model.Movie;
 import io.phatcat.popmovies.moviedetails.MovieDetailsActivity;
 import io.phatcat.popmovies.movies.MovieFragment;
+import io.phatcat.popmovies.utils.IntentUtils;
 import io.phatcat.popmovies.utils.PreferencesUtils;
 
 import static io.phatcat.popmovies.moviedetails.MovieDetailsActivity.ARG_MOVIE;
@@ -80,6 +81,21 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_help:
+                Intent intent = Intent.createChooser(IntentUtils.getPrivacyPolicyIntent(),
+                        getString(R.string.title_privacy_policy));
+
+                startActivity(intent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
